@@ -21,4 +21,5 @@ jobs:
           token: ${{ secrets.A_REPO_PAT }}
 
       # プライベートリポジトリの中身を表示してみる
-      - run: ls ./ga_test_sync_private
+      - run: git push https://x-access-token:${{secrets.A_REPO_PAT}}@github.com/buriki-test-org/ga_test_sync_private.git --force
+      #- run: ls ./ga_test_sync_private
