@@ -1,25 +1,29 @@
-name: checkout private repository ( pat )
+name: Mirror to orgB
 
 on:
   push:
     branches:
-      - main
+      - main  # トリガーにするブランチ
 
 jobs:
-  main:
+  mirror:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout source repository
+        uses: actions/checkout@v4
 
-      - uses: actions/checkout@v3
-        with:
-          # プライベートリポジトリを指定
-          repository: buriki-test-org/ga_test_sync_private
-          # checkout 先のパスを指定
-          path: ./ga_test_sync_private
-          # Personal Access Token を指定
-          token: ${{ secrets.A_REPO_PAT }}
+      - name: Set up GitHub CLI
+        run: sudo apt-get install -y gh
 
-      # プライベートリポジトリの中身を表示してみる
-      - run: git push https://x-access-token:${{secrets.A_REPO_PAT}}@github.com/buriki-test-org/ga_test_sync_private.git --force
-      #- run: ls ./ga_test_sync_private
+      - name: Authenticate with GitHub CLI
+        run: echo "${{ secrets.A_REPO_PAT }}" | gh auth login --with-token
+
+      #- name: Set Git identity
+      #  run: |
+      #    git config user.name "your-name"
+      #    git config user.email "your-email@example.com"
+
+      - name: Push to target repository (orgB)
+        run: |
+          git push https://github.com/buriki-test-org/ga_test_sync_private.git --force
