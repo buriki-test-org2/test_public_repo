@@ -20,6 +20,6 @@ jobs:
       # リポジトリBをクローン
       - name: Clone Repository B
         run: |
-          git remote add repoB https://x-access-token:${{ secrets.A_REPO_PAT }}@github.com/buriki-test-org/github_actions_sync_test.git
+          git remote add repoB https://x-access-token:${{ secrets.A_REPO_PAT }}@github.com/buriki-test-org/ga_test_sync_private.git
           git remote -v
           git ls-remote repoB
