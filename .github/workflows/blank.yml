@@ -1,4 +1,4 @@
-name: Sync Repository
+name: checkout private repository ( pat )
 
 on:
   push:
@@ -6,20 +6,19 @@ on:
       - main
 
 jobs:
-  sync:
+  main:
     runs-on: ubuntu-latest
-
     steps:
-      # リポジトリAをチェックアウト
-      - name: Checkout Repository A
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: main
+      - uses: actions/checkout@v3
 
-      # リポジトリBをクローン
-      - name: Clone Repository B
-        run: |
-          git remote add repoB https://x-access-token:${{ secrets.A_REPO_PAT }}@github.com/buriki-test-org/ga_test_sync_private.git
-          git remote -v
-          git ls-remote repoB
+      - uses: actions/checkout@v3
+        with:
+          # プライベートリポジトリを指定
+          repository: buriki-test-org/ga_test_sync_private
+          # checkout 先のパスを指定
+          path: ./ga_test_sync_private
+          # Personal Access Token を指定
+          token: ${{ secrets.A_REPO_PAT }}
+
+      # プライベートリポジトリの中身を表示してみる
+      - run: ls ./ga_test_sync_private
